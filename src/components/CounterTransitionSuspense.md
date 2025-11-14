@@ -69,9 +69,9 @@ handle transistions + data loaders.
 
 There were 3 possible UI states:
 
-    1. normal update -> component re-renders instantly
-    2. transition but resource ready -> component re-renders, no fallback
-    3. transition & resource pending -> Suspense fallback + isPending
+    1. normal update -> component re-renders instantly (#renders = 1)
+    2. transition but resource ready -> component re-renders, no fallback (#renders = 2)
+    3. transition & resource pending -> Suspense fallback + isPending (#renders = 3)
 
 ### How throwing promises replaces manual fetching logic
 
@@ -98,3 +98,13 @@ This mental model is key for understanding:
     ⭐ Caching is essential to avoid infinite suspensions
     ⭐ isPending is not the same as Suspense fallback—both have distinct roles
 
+## Why does React do 3 renders during a Suspense transition?
+
+Because Suspense has two distinct UI states:
+
+    1. The initial attempt → Render 1
+        React tries to render but hits suspension.
+    2. Fallback UI → Render 2
+        Suspense inserts fallback UI to keep your app responsive.
+    3. Retry after promise resolves → Render 3
+        React commits the real UI now that the data is available.

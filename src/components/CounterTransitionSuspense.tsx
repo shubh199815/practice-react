@@ -68,6 +68,8 @@ export default function CounterTransitionSuspense() {
         });
     };
 
+    console.log('Rendering CounterTransitionSuspense, isPending:', isPending);
+
     return (
         <>
             <h2>Counter with Transition and Suspense</h2>
